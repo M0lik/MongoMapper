@@ -14,6 +14,13 @@ function toMongooseType(val: any): string {
     }
 }
 
+/**
+ *
+ *
+ * @export
+ * @param {Object} obj object to transform to mongoose schema
+ * @returns {Object} mongooseSchema like object
+ */
 export default function resObject(obj: Object): Object {
     const schema = {};
 
