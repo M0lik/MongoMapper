@@ -8,7 +8,7 @@ import * as fs from 'fs';
  */
 export default class FileWriter {
 
-    private _file : string = '';
+    private _file: string = '';
 
     /**
      *Creates an instance of FileWriter.
@@ -16,20 +16,20 @@ export default class FileWriter {
      * @param {string} schema the schema structure to write
      * @memberof FileWriter
      */
-    constructor(fileName : string, schema : string ){
+    constructor(fileName: string, schema: string) {
         this._file = this.header(fileName) + JSON.stringify(schema) + this.footer();
     }
 
     private header(className: string) {
-        return `var mongoose = require('mongoose');\n \
-        var Schema = mongoose.Schema;\n \
-        \n \
-        var ${className}Schema = new Schema(`;
-      }
-      
+        return "var mongoose = require('mongoose');\n" +
+            "var Schema = mongoose.Schema;\n" +
+            "\n" +
+            `var ${className}Schema = new Schema(`;
+    }
+
     private footer() {
         return `);`;
-      }
+    }
 
     /**
      *
@@ -37,7 +37,7 @@ export default class FileWriter {
      * @returns current file of writer
      * @memberof FileWriter
      */
-    getFileAsString(){
+    getFileAsString() {
         return this._file;
     }
 
@@ -47,7 +47,7 @@ export default class FileWriter {
      * @param {string} pathToWriteFile path where you want to write the file
      * @memberof FileWriter
      */
-    write(pathToWriteFile : string){
+    write(pathToWriteFile: string) {
         fs.writeFileSync(pathToWriteFile, this._file, { encoding: 'utf8', flag: 'w' });
     }
 
