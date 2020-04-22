@@ -1,5 +1,4 @@
 import * as fs from 'fs';
-import { create } from 'domain';
 
 /**
  *
@@ -8,9 +7,9 @@ import { create } from 'domain';
  * @class FileWriter
  */
 export default class FileWriter {
-
     private _file: string = '';
     private _collectionName: string = '';
+    private _dataTypeName: string = '';
 
     /**
      *Creates an instance of FileWriter.
@@ -20,102 +19,37 @@ export default class FileWriter {
      */
     constructor(fileName: string, schema: string) {
         this._collectionName = fileName;
+        this._dataTypeName = `${this._collectionName}Data`;
         this._file = this.header() + JSON.stringify(schema) + this.footer();
     }
 
-    private header() {
-        return "var mongoose = require('mongoose');\n" +
-            "var Schema = mongoose.Schema;\n" +
-            "\n" +
-            `var ${this._collectionName}Schema = new Schema(`;
-    }
+    private header = () => "var mongoose = require('mongoose');\n" +
+        "var Schema = mongoose.Schema;\n" +
+        "\n" +
+        `var ${this._collectionName}Schema = new Schema(`;
 
-    private footer() {
-        return `);\n` +
-            "\n" +
-            `const ${this._collectionName}Data = mongoose.model("${this._collectionName}", ${this._collectionName}Schema, "${this._collectionName}");\n` +
-            "\n" +
-            `const ${this._collectionName} = {\n` +
-            this.crud() +
-            "}\n\n" +
-            `export default ${this._collectionName};`;
-    }
+    private footer = () => `);\n` +
+        "\n" +
+        `const ${this._collectionName}Data = mongoose.model("${this._collectionName}", ${this._collectionName}Schema, "${this._collectionName}");\n` +
+        "\n" +
+        `const ${this._collectionName} = {\n` +
+        this.crud() +
+        "}\n\n" +
+        `export default ${this._collectionName};`;
 
-    private create() {
-        const dataTypeName = `${this._collectionName}Data`;
-        return 'create(objToCreate : any){\n' +
-            `let tmp = new ${dataTypeName}(objToCreate);\n` +
-            'tmp.save()\n' +
-            '.then((data)=> {\n' +
-            'console.log(data);\n' +
-            '})\n' +
-            '.catch((err)=> {\n' +
-            'console.log(err);\n' +
-            '})\n' +
-            '},\n';
-    }
+    private create = () => `create : async (objToCreate : any) => (new ${this._dataTypeName}(objToCreate)).save(),\n`;
 
-    private read() {
-        const dataTypeName = `${this._collectionName}Data`;
-        const readByField = 'readByField(objFilter : any = {}){\n' +
-            `${dataTypeName}\n.find(objFilter)` +
-            '.then((data)=>{\n' +
-            'console.log(data);\n' +
-            '})\n' +
-            '.catch((err)=>{\n' +
-            'console.log(err);\n' +
-            '})\n' +
-            '},\n';
+    private readByField = () => `readByField : async (objFilter : any = {}) => await ${this._dataTypeName}.find(objFilter),\n`;
+    private readById = () => `readById : async (dataId : string) => mongoose.Types.ObjectId.isValid(dataId) ? (await ${this._dataTypeName}.find({_id : dataId}))[0] : null,\n`;
+    private read = () => this.readByField() + this.readById();
 
-        const readById = 'readById(dataId : string){\n' +
-            'if (mongoose.Types.ObjectId.isValid(dataId))' +
-            `${dataTypeName}\n.find({_id : dataId})` +
-            '.then((data)=>{\n' +
-            'console.log(data);\n' +
-            '})\n' +
-            '.catch((err)=>{\n' +
-            'console.log(err);\n' +
-            '})\n' +
-            '},\n';
+    private update = () => 'update : async (document : any) => await document.save(),\n';
 
-        return readByField + readById;
-    }
-    private update() {
-        return '';
-    }
-    private delete() {
-        const dataTypeName = `${this._collectionName}Data`;
-        return 'delete(dataId : any){\n' +
-            'if(mongoose.Types.ObjectId.isValid(dataId)) {\n' +
-            `${dataTypeName}.deleteOne({_id : dataId})\n` +
-            '.then((docs)=>{\n' +
-            '}).catch((err)=>{\n' +
-            '})\n' +
-            '}},\n';
-    }
+    private delete = () => `delete : async (dataId : any) => mongoose.Types.ObjectId.isValid(dataId) ? await ${this._dataTypeName}.deleteOne({_id : dataId}) : null,\n`;
 
-    private crud() {
-        return `${this.create()}\n${this.read()}\n${this.update()}\n${this.delete()}\n`;
-    }
+    private crud = () => `${this.create()}\n${this.read()}\n${this.update()}\n${this.delete()}\n`;
 
-    /**
-     *
-     *
-     * @returns current file of writer
-     * @memberof FileWriter
-     */
-    getFileAsString() {
-        return this._file;
-    }
+    getFileAsString = () => this._file;
 
-    /**
-     *
-     *
-     * @param {string} pathToWriteFile path where you want to write the file
-     * @memberof FileWriter
-     */
-    write(pathToWriteFile: string) {
-        fs.writeFileSync(pathToWriteFile, this._file, { encoding: 'utf8', flag: 'w' });
-    }
-
+    write = (pathToWriteFile: string) => fs.writeFileSync(pathToWriteFile, this._file, { encoding: 'utf8', flag: 'w' });
 }
