@@ -18,9 +18,10 @@ export default class FileWriter {
      * @memberof FileWriter
      */
     constructor(fileName: string, schema: string) {
+        console.log('schema : ', schema);
         this._collectionName = fileName;
         this._dataTypeName = `${this._collectionName}Data`;
-        this._file = this.header() + JSON.stringify(schema) + this.footer();
+        this._file = this.header() + JSON.stringify(schema).replace(/['"]+/g, '') + this.footer();
     }
 
     private header = () => "var mongoose = require('mongoose');\n" +
