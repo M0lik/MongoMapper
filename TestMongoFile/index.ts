@@ -15,3 +15,6 @@ app.use('/API', apiRoutes);
 const server = http.listen(3000, function () {
     console.log("listening on *:3000");
 });
+
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/Geti', {useNewUrlParser: true, useUnifiedTopology: true});

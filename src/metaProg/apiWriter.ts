@@ -24,11 +24,7 @@ export default class ApiWriter {
         this._file = this.header() + this.rest() + this.footer();
     }
 
-    private header = () => "var mongoose = require('mongoose');\n" +
-        "\n" +
-        `import ${this._collectionName} from '../Schema/${this._collectionName}';\n` +
-        "\n" +
-        "mongoose.connect('mongodb://localhost/Geti', {useNewUrlParser: true, useUnifiedTopology: true});\n" +
+    private header = () => `import ${this._collectionName} from '../Schema/${this._collectionName}';\n` +
         "\n" +
         "import * as express from 'express';\n" +
         "\n" +

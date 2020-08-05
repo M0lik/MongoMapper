@@ -1,8 +1,4 @@
-var mongoose = require('mongoose');
-
 import Dishes from '../Schema/Dishes';
-
-mongoose.connect('mongodb://localhost/Geti', {useNewUrlParser: true, useUnifiedTopology: true});
 
 import * as express from 'express';
 

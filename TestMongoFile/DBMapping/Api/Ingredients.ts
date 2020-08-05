@@ -1,8 +1,4 @@
-var mongoose = require('mongoose');
-
 import Ingredients from '../Schema/Ingredients';
-
-mongoose.connect('mongodb://localhost/Geti', {useNewUrlParser: true, useUnifiedTopology: true});
 
 import * as express from 'express';
 

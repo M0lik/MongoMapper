@@ -1,8 +1,4 @@
-var mongoose = require('mongoose');
-
 import GroupUser from '../Schema/GroupUser';
-
-mongoose.connect('mongodb://localhost/Geti', {useNewUrlParser: true, useUnifiedTopology: true});
 
 import * as express from 'express';
 
