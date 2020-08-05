@@ -9,18 +9,14 @@ import * as fs from 'fs';
 export default class ApiRoutes {
     private _file: string;
     private _collectionsNames: string[];
-    private _connectionString: string;
     /**
      *Creates an instance of FileWriter.
      * @param {string} fileName the name of the mongoose schema, it will write 'name + Schema'
      * @param {string} schema the schema structure to write
      * @memberof FileWriter
      */
-    constructor(fileNames: string[], mongoDbConnectionUrl: string) {
-        //console.log('schema : ', schema);
-        this._connectionString = mongoDbConnectionUrl;
+    constructor(fileNames: string[]) {
         this._collectionsNames = fileNames;
-        //this._dataTypeName = `${this._collectionName}Data`;
         this._file = this.header() + this.routes() + this.footer();
     }
 
