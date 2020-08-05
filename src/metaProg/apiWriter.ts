@@ -30,7 +30,7 @@ export default class ApiWriter {
         "\n" +
         "mongoose.connect('mongodb://localhost/Geti', {useNewUrlParser: true, useUnifiedTopology: true});\n" +
         "\n" +
-        "import express from 'express';\n" +
+        "import * as express from 'express';\n" +
         "\n" +
         "let router = express.Router();\n" + "\n"
         ;
