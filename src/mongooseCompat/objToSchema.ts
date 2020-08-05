@@ -2,7 +2,6 @@ import * as mongoose from 'mongoose';
 
 function resArray(arr: any[]): any[] {
     const schema = [];
-    console.log("array ", arr);
     if (!!arr[0])
         schema.push(resObject(arr[0]));
     return schema;
