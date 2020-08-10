@@ -7,3 +7,6 @@ Make proper config in src/config.ts
 uri is Mongodb connection uri.  
 dbName the name of the database you want to import.  
 exitFolder, the name of the folder where you want find the export.  
+
+
+
